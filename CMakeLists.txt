@@ -2,9 +2,6 @@ cmake_minimum_required(VERSION 2.8.12)
 
 project(ArduinoDueCore C CXX ASM)
 
-
-set(CMAKE_VERBOSE_MAKEFILE ON)
-
 file(GLOB SRC "ArduinoCore-sam/cores/arduino/*.h" "ArduinoCore-sam/cores/arduino/*.cpp" "ArduinoCore-sam/cores/arduino/*.c")
 
 include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
