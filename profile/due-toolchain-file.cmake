@@ -10,8 +10,8 @@ if(NOT DEFINED ENV{CONAN_CMAKE_FIND_ROOT_PATH})
 endif()
 
 # Include/link arm directories
-include_directories("${ARM_TOOLCHAIN}/arm-none-eabi/include")
-link_directories("${ARM_TOOLCHAIN}/arm-none-eabi/lib")
+include_directories("${CONAN_CMAKE_FIND_ROOT_PATH}/arm-none-eabi/include")
+link_directories("${CONAN_CMAKE_FIND_ROOT_PATH}/arm-none-eabi/lib")
 
 # General compiler flags
 set(CMAKE_FLAGS "-g -Os -w  -ffunction-sections -fdata-sections -nostdlib --param max-inline-insns-single=500 -MMD -mcpu=cortex-m3 -mthumb")
