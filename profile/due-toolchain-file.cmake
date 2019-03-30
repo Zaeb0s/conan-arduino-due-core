@@ -11,10 +11,9 @@ elseif(NOT IS_DIRECTORY $ENV{CONAN_CMAKE_FIND_ROOT_PATH})
     message(FATAL_ERROR "CONAN_CMAKE_FIND_ROOT_PATH does not point to a directory! ($ENV{CONAN_CMAKE_FIND_ROOT_PATH})")
 endif()
 
-# Include/link arm directories
+# Include/link arm-toolchain directories
 include_directories("$ENV{CONAN_CMAKE_FIND_ROOT_PATH}/arm-none-eabi/include")
 link_directories("$ENV{CONAN_CMAKE_FIND_ROOT_PATH}/arm-none-eabi/lib")
-
 
 # =============================== Set flags ===============================
 # Add flags for C++
@@ -69,9 +68,9 @@ set(CMAKE_ASM_COMPILER ${CMAKE_C_COMPILER})
 set(CMAKE_LINKER ${CMAKE_C_COMPILER})
 
 # ============================= Configure compile steps =======================
-set(CMAKE_ASM_LINK_EXECUTABLE "<CMAKE_LINKER> <CMAKE_ASM_LINK_FLAGS> <LINK_FLAGS> -Wl,--cref -Wl,--check-sections -Wl,--gc-sections -Wl,--unresolved-symbols=report-all -Wl,--warn-common -Wl,--warn-section-align -Wl,-Map,<TARGET>.map -o <TARGET>.elf -Wl,--start-group <OBJECTS> <LINK_LIBRARIES> -Wl,--end-group -lm -lgcc")
-set(CMAKE_C_LINK_EXECUTABLE "<CMAKE_LINKER> <CMAKE_C_LINK_FLAGS> <LINK_FLAGS> -Wl,--cref -Wl,--check-sections -Wl,--gc-sections -Wl,--unresolved-symbols=report-all -Wl,--warn-common -Wl,--warn-section-align -Wl,-Map,<TARGET>.map -o <TARGET>.elf -Wl,--start-group <OBJECTS> <LINK_LIBRARIES> -Wl,--end-group -lm -lgcc")
 set(CMAKE_CXX_LINK_EXECUTABLE "<CMAKE_LINKER> <CMAKE_CXX_LINK_FLAGS> <LINK_FLAGS> -Wl,--cref -Wl,--check-sections -Wl,--gc-sections -Wl,--unresolved-symbols=report-all -Wl,--warn-common -Wl,--warn-section-align -Wl,-Map,<TARGET>.map -o <TARGET>.elf -Wl,--start-group <OBJECTS> <LINK_LIBRARIES> -Wl,--end-group -lm -lgcc")
+set(CMAKE_C_LINK_EXECUTABLE "<CMAKE_LINKER> <CMAKE_C_LINK_FLAGS> <LINK_FLAGS> -Wl,--cref -Wl,--check-sections -Wl,--gc-sections -Wl,--unresolved-symbols=report-all -Wl,--warn-common -Wl,--warn-section-align -Wl,-Map,<TARGET>.map -o <TARGET>.elf -Wl,--start-group <OBJECTS> <LINK_LIBRARIES> -Wl,--end-group -lm -lgcc")
+set(CMAKE_ASM_LINK_EXECUTABLE "<CMAKE_LINKER> <CMAKE_ASM_LINK_FLAGS> <LINK_FLAGS> -Wl,--cref -Wl,--check-sections -Wl,--gc-sections -Wl,--unresolved-symbols=report-all -Wl,--warn-common -Wl,--warn-section-align -Wl,-Map,<TARGET>.map -o <TARGET>.elf -Wl,--start-group <OBJECTS> <LINK_LIBRARIES> -Wl,--end-group -lm -lgcc")
 
 set(CMAKE_CXX_COMPILE_OBJECT "<CMAKE_CXX_COMPILER> <FLAGS> <DEFINES> <INCLUDES> <SOURCE> -o <OBJECT>") 
 set(CMAKE_C_COMPILE_OBJECT "<CMAKE_C_COMPILER> <FLAGS> <DEFINES> <INCLUDES> <SOURCE> -o <OBJECT>") 
@@ -85,7 +84,7 @@ set(CMAKE_ASM_CREATE_STATIC_LIBRARY "<CMAKE_AR> rcs <TARGET> <OBJECTS>")
 
 macro(_generate_object target)
     find_program(CMAKE_OBJCOPY NAMES arm-none-eabi-objcopy PATHS "$ENV{CONAN_CMAKE_FIND_ROOT_PATH}/bin")
-    if (NOT CMAKE_AR)
+    if (NOT CMAKE_OBJCOPY)
         message(FATAL_ERROR "Objcopy \"arm-none-eabi-objcopy\" not found!")
     else()
         message("Found objcopy: ${CMAKE_OBJCOPY}")
@@ -99,7 +98,7 @@ endmacro()
 
 macro(_firmware_size target)
     find_program(CMAKE_SIZE_UTIL NAMES arm-none-eabi-size PATHS "$ENV{CONAN_CMAKE_FIND_ROOT_PATH}/bin")
-    if (NOT CMAKE_AR)
+    if (NOT CMAKE_SIZE_UTIL)
         message(FATAL_ERROR "\"arm-none-eabi-size\" not found!")
     else()
         message("Found arm-none-eabi-size: ${CMAKE_SIZE_UTIL}")
