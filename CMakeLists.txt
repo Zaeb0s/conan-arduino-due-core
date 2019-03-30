@@ -1,12 +1,10 @@
 cmake_minimum_required(VERSION 2.8.12)
 
 project(ArduinoDueCore C CXX ASM)
-
-file(GLOB SRC "ArduinoCore-sam/cores/arduino/*.h" "ArduinoCore-sam/cores/arduino/*.cpp" "ArduinoCore-sam/cores/arduino/*.c")
+set(CMAKE_VERBOSE_MAKEFILE ON)
 
 include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
 conan_basic_setup()
-
 
 add_library(${CMAKE_PROJECT_NAME} STATIC
     "ArduinoCore-sam/cores/arduino/wiring_pulse_asm.S"
@@ -39,16 +37,7 @@ add_library(${CMAKE_PROJECT_NAME} STATIC
     "ArduinoCore-sam/cores/arduino/WString.cpp"
     "ArduinoCore-sam/cores/arduino/UARTClass.cpp"
 )
-SET_TARGET_PROPERTIES(${CMAKE_PROJECT_NAME}  
-   PROPERTIES LINKER_LANGUAGE ASM) 
-add_library(variant "ArduinoCore-sam/variants/arduino_due_x/variant.cpp")
-
-
-target_link_libraries(${CMAKE_PROJECT_NAME} ${CONAN_LIBS})
-target_link_libraries(variant ${CONAN_LIBS})
-
-target_link_libraries(${CMAKE_PROJECT_NAME} variant)
-target_link_libraries(variant ${CMAKE_PROJECT_NAME})
+add_library(variant OBJECT "ArduinoCore-sam/variants/arduino_due_x/variant.cpp")
 
 target_include_directories(${CMAKE_PROJECT_NAME} PUBLIC "ArduinoCore-sam/system/libsam")
 target_include_directories(${CMAKE_PROJECT_NAME} PUBLIC "ArduinoCore-sam/system/CMSIS/CMSIS/Include")

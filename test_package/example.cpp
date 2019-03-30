@@ -1,13 +1,11 @@
 #include <Arduino.h>
-// LED connected to digital pin 13
 
+// LED connected to digital pin 13
 const int PIN13 = 13;
 void setup()
 {
     pinMode(PIN13, OUTPUT);
 }
-
-
 
 void loop()
 {    
