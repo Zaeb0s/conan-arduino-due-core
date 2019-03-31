@@ -9,7 +9,7 @@ pipeline
         {
             steps
             {
-                sh "echo ${PATH}"
+                echo "${PATH}"
                 sh "mkdir -p build"
                 sh "conan install . zaebos/stable -if build -pr profile/arduino-due"
             }
