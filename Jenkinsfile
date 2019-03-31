@@ -3,10 +3,8 @@
 pipeline 
 {
     agent any
-    cleanWs()
-    checkout scm
     stages
-    {                
+    {                        
         stage("Install")
         {
             steps
@@ -14,6 +12,7 @@ pipeline
                 echo "PATH: ${PATH}"
                 echo "PYTHONPATH: ${PYTHONPATH}"
                 sh "mkdir -p build"
+                sh "rm -rf build/*"
                 sh "conan install . zaebos/stable -if build -pr profile/arduino-due"
             }
         }
