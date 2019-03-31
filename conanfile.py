@@ -1,6 +1,7 @@
 from conans import ConanFile, CMake, tools
 import shutil
 import os
+from conans.errors import ConanInvalidConfiguration
 
 def copytree(src, dst, symlinks=False, ignore=None):
     for item in os.listdir(src):
@@ -25,7 +26,12 @@ class ArduinoDueCoreConan(ConanFile):
     topics = ("arduino", "due", "arm")
     generators = "cmake"       
     exports_sources = "CMakeLists.txt", "profile/*", "ArduinoCore-sam/*"
-    settings = {"os": None, "build_type": None, "compiler": ["gcc"], "arch": ["armv7"]}           
+    settings = {"os": None, "build_type": None, "compiler": ["gcc"], "arch": ["armv7"]}       
+
+    def configure(self):
+        if self.settings.compiler == "gcc" and self.settings.compiler.version < "4.8":
+            raise ConanInvalidConfiguration("GCC > 4.8 is required")
+
 
     def source(self):        
         if not os.path.exists("ArduinoCore-sam"):

@@ -5,6 +5,7 @@ set(CMAKE_CROSSCOMPILING 1)
 
 set(CMAKE_TRY_COMPILE_TARGET_TYPE STATIC_LIBRARY)
 set(CAN_USE_ASSEMBLER TRUE)
+set(CONAN_DISABLE_CHECK_COMPILER TRUE)
 
 if(WIN32)
     set(EXECUTABLE_SUFFIX ".exe") # Used in find_program (seems to be required for windows 7)
