@@ -5,14 +5,6 @@ pipeline
     agent any
     stages
     {        
-        stage('Checkout')
-        {
-            steps
-            {
-                checkout scm        
-                sh "echo ${PATH}"
-            }
-        }
         stage("Install")
         {
             steps
