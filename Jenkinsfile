@@ -2,8 +2,6 @@
 
 pipeline 
 {
-    def client = Artifactory.newConanClient()
-
     agent any
     stages
     {        
@@ -18,22 +16,22 @@ pipeline
         {
             steps
             {
-                sh "mkdir -p build"                
-                client.run(command: "install . zaebos/stable -if build -pr profile/arduino-due")
+                sh "mkdir -p build"
+                sh "conan install . zaebos/stable -if build -pr profile/arduino-due"
             }
         }
         stage("Source")
         {    
             steps
             {
-                client.run(command: "source . -sf build -if build")
+                sh "conan source . -sf build -if build"                 
             }
         }
         stage("Build")
         {    
             steps
             {                    
-                client.run(command: "build . -bf build -if build -sf build")              
+                sh "conan build . -bf build -if build -sf build"                 
             }
         }
         stage("Package")
@@ -41,7 +39,7 @@ pipeline
             steps
             {
                 sh "mkdir -p build/package"
-                client.run(command: "package . -bf build -if build -sf build -pf build/package")
+                sh "conan package . -bf build -if build -sf build -pf build/package"
             }
         }
     }
