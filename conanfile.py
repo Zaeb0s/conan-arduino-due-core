@@ -29,8 +29,8 @@ class ArduinoDueCoreConan(ConanFile):
     settings = {"os": None, "build_type": None, "compiler": ["gcc"], "arch": ["armv7"]}       
 
     def configure(self):
-        if self.settings.compiler == "gcc" and self.settings.compiler.version < "4.8":
-            raise ConanInvalidConfiguration("GCC > 4.8 is required")
+        if self.settings.compiler == "gcc" and str(self.settings.compiler.version) < "4.8":
+            raise ConanInvalidConfiguration("GCC >= 4.8 is required, yours is {0}".format(self.settings.compiler.version))
 
 
     def source(self):        
