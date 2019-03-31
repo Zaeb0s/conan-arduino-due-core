@@ -1,7 +1,7 @@
 #include <Arduino.h>
-
+#include <stdint.h>
 // LED connected to digital pin 13
-const int PIN13 = 13;
+const int16_t PIN13 = 13;
 void setup()
 {
     pinMode(PIN13, OUTPUT);
@@ -16,3 +16,4 @@ void loop()
     digitalWrite(PIN13, LOW);
     delay(1000);
 }
+ 

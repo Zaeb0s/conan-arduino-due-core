@@ -5,16 +5,6 @@ set(CMAKE_CROSSCOMPILING 1)
 set(CMAKE_TRY_COMPILE_TARGET_TYPE STATIC_LIBRARY)
 set(CAN_USE_ASSEMBLER TRUE)
 
-if(NOT DEFINED ENV{CONAN_CMAKE_FIND_ROOT_PATH})
-    message(FATAL_ERROR "You must set CONAN_CMAKE_FIND_ROOT_PATH in the conan profile")
-elseif(NOT IS_DIRECTORY $ENV{CONAN_CMAKE_FIND_ROOT_PATH})
-    message(FATAL_ERROR "CONAN_CMAKE_FIND_ROOT_PATH does not point to a directory! ($ENV{CONAN_CMAKE_FIND_ROOT_PATH})")
-endif()
-
-# Include/link arm-toolchain directories
-include_directories("$ENV{CONAN_CMAKE_FIND_ROOT_PATH}/arm-none-eabi/include")
-link_directories("$ENV{CONAN_CMAKE_FIND_ROOT_PATH}/arm-none-eabi/lib")
-
 # =============================== Set flags ===============================
 # Add flags for C++
 set(CMAKE_CXX_FLAGS "-c -g -Os -w -std=gnu++11 -ffunction-sections -fdata-sections -nostdlib -fno-threadsafe-statics --param max-inline-insns-single=500 -fno-rtti -fno-exceptions -MMD -mcpu=cortex-m3 -mthumb") 
@@ -43,21 +33,21 @@ add_compile_definitions(F_CPU=84000000L
                         USB_PRODUCT="Arduino Due")
            
 # =============================== Set compilers ===============================
-find_program(CMAKE_C_COMPILER NAMES arm-none-eabi-gcc PATHS "$ENV{CONAN_CMAKE_FIND_ROOT_PATH}/bin")
+find_program(CMAKE_C_COMPILER NAMES arm-none-eabi-gcc)
 if (NOT CMAKE_C_COMPILER)
     message(FATAL_ERROR "C compiler \"arm-none-eabi-gcc\" not found!")
 else()
     message("Found C compiler: ${CMAKE_C_COMPILER}")
 endif()
 
-find_program(CMAKE_CXX_COMPILER NAMES arm-none-eabi-g++ PATHS "$ENV{CONAN_CMAKE_FIND_ROOT_PATH}/bin")
+find_program(CMAKE_CXX_COMPILER NAMES arm-none-eabi-g++)
 if (NOT CMAKE_CXX_COMPILER)
     message(FATAL_ERROR "CXX compiler \"arm-none-eabi-g++\" not found!")
 else()
     message("Found CXX compiler: ${CMAKE_CXX_COMPILER}")
 endif()
 
-find_program(CMAKE_AR NAMES arm-none-eabi-ar PATHS "$ENV{CONAN_CMAKE_FIND_ROOT_PATH}/bin")
+find_program(CMAKE_AR NAMES arm-none-eabi-ar)
 if (NOT CMAKE_AR)
     message(FATAL_ERROR "Archiver \"arm-none-eabi-ar\" not found!")
 else()
@@ -83,7 +73,7 @@ set(CMAKE_ASM_CREATE_STATIC_LIBRARY "<CMAKE_AR> rcs <TARGET> <OBJECTS>")
 # ============================ Macros =======================================
 
 macro(_generate_object target)
-    find_program(CMAKE_OBJCOPY NAMES arm-none-eabi-objcopy PATHS "$ENV{CONAN_CMAKE_FIND_ROOT_PATH}/bin")
+    find_program(CMAKE_OBJCOPY NAMES arm-none-eabi-objcopy)
     if (NOT CMAKE_OBJCOPY)
         message(FATAL_ERROR "Objcopy \"arm-none-eabi-objcopy\" not found!")
     else()
@@ -97,7 +87,7 @@ macro(_generate_object target)
 endmacro()
 
 macro(_firmware_size target)
-    find_program(CMAKE_SIZE_UTIL NAMES arm-none-eabi-size PATHS "$ENV{CONAN_CMAKE_FIND_ROOT_PATH}/bin")
+    find_program(CMAKE_SIZE_UTIL NAMES arm-none-eabi-size)
     if (NOT CMAKE_SIZE_UTIL)
         message(FATAL_ERROR "\"arm-none-eabi-size\" not found!")
     else()
