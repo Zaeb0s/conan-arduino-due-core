@@ -10,6 +10,7 @@ pipeline
             steps
             {
                 checkout scm        
+                sh "echo ${PATH}"
             }
         }
         stage("Install")
