@@ -3,8 +3,10 @@
 pipeline 
 {
     agent any
+    cleanWs()
+    checkout scm
     stages
-    {        
+    {                
         stage("Install")
         {
             steps
