@@ -28,7 +28,8 @@ class ArduinoDueCoreConan(ConanFile):
     settings = {"os": None, "build_type": None, "compiler": ["gcc"], "arch": ["armv7"]}           
 
     def source(self):        
-        self.run("git clone https://github.com/arduino/ArduinoCore-sam.git")        
+        if not os.path.exists("ArduinoCore-sam"):
+            self.run("git clone https://github.com/arduino/ArduinoCore-sam.git")        
 
     def copy_profile(self):
         src = os.path.join("profile")
