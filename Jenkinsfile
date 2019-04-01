@@ -4,8 +4,8 @@ pipeline
 {
     agent any
     stages
-    {                        
-        stage("Install")
+    {    
+        stage("Info")
         {
             steps
             {
@@ -13,29 +13,15 @@ pipeline
                 echo "PYTHONPATH: ${PYTHONPATH}"
                 sh "mkdir -p build"
                 sh "rm -rf build/*"
-                sh "conan install . zaebos/stable -if build -pr profile/arduino-due"
+                sh "conan info . --graph=build/package.hmtl -pr profile/arduino-due"
+                archiveArtifacts artifacts: 'build/package.html'
             }
-        }
-        stage("Source")
-        {    
-            steps
-            {
-                sh "conan source . -sf build -if build"                 
-            }
-        }
-        stage("Build")
-        {    
-            steps
-            {                    
-                sh "conan build . -bf build -if build -sf build"                 
-            }
-        }
-        stage("Package")
+        }                    
+        stage("Build and run tests")
         {
             steps
-            {
-                sh "mkdir -p build/package"
-                sh "conan package . -bf build -if build -sf build -pf build/package"
+            {                
+                sh "conan create . zaebos/stable -pr profile/arduino-due"
             }
         }
     }
