@@ -13,7 +13,7 @@ pipeline
                 echo "PYTHONPATH: ${PYTHONPATH}"
                 sh "mkdir -p build"
                 sh "rm -rf build/*"
-                sh "conan info . --graph=build/package.hmtl -pr profile/arduino-due"
+                sh "conan info . --graph=build/package.html -pr profile/arduino-due"
                 archiveArtifacts artifacts: 'build/package.html'
             }
         }                    
