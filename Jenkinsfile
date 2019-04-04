@@ -13,8 +13,8 @@ pipeline
                 echo "PYTHONPATH: ${PYTHONPATH}"
                 sh "mkdir -p build"
                 sh "rm -rf build/*"
-                sh "conan info . --graph=build/package.html -pr profile/arduino-due"
-                archiveArtifacts artifacts: 'build/package.html'
+                sh "conan info . --graph=build/index.html -pr profile/arduino-due"
+                publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: false, reportDir: '', reportFiles: 'build/index.html', reportName: 'HTML Report', reportTitles: ''])                
             }
         }                    
         stage("Build and run tests")
